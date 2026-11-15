@@ -17,6 +17,16 @@
       "symbol": "var_connected"
     },
     {
+      "id": "3",
+      "name": "ConnFromSender",
+      "symbol": "var_connfromsender"
+    },
+    {
+      "id": "4",
+      "name": "ConnFromReceiver",
+      "symbol": "var_connfromreceiver"
+    },
+    {
       "id": "d4c393b9-b715-46aa-ba8b-dff11fb5531b__L0",
       "name": "Local 0",
       "symbol": "var_local_0"
@@ -40,16 +50,6 @@
       "id": "ed325cd4-c259-4105-a27d-0de758091d8c__L2",
       "name": "ConnAttempts",
       "symbol": "var_connattempts"
-    },
-    {
-      "id": "3",
-      "name": "ConnFromSender",
-      "symbol": "var_connfromsender"
-    },
-    {
-      "id": "4",
-      "name": "ConnFromReceiver",
-      "symbol": "var_connfromreceiver"
     }
   ],
   "constants": []

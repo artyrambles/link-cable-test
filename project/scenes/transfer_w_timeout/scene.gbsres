@@ -20,15 +20,6 @@
     {
       "command": "EVENT_COMMENT",
       "args": {
-        "text": "- NOTES -\nThis is an extremely sloppy and quickly thrown-together demo of how to establish a \"mutual\" link cable connection and send over one variable's value to the \"Receiver\" ROM.\n\nIt relies mostly on very aggressively keeping the scene stuck in a loop while it tries to brute-force sending and receiving a singular byte of data.\n\nRemember we are dealing with dial-up speeds, so plenty of delays allow the data transfers to finish before they overwrite their own buffers.\n\nThe basic idea is three stages of looping, and they are essentially mirrored between Sender and Receiver with the main difference being that the Sender has the role of transmitting data to the Receiver\n\nSo, each ROM goes through these stages:\n1: Loop until the other ROM sent you a TRUE value, this is now the local Connection variable that confirms the other ROM is attempting to talk to us. We are sending our own TRUE value to the other ROM at the same time.\n2: Move to the next loop where the data variable is sent over. This loop keeps going until both ROMs have confirmed that the value they are transferring/receiving has changed.\n3: The last loop mutually closes the connection by sending FALSE and setting the local Connection variable to this received FALSE value. Only once this value has been confirmed, the final loop quits and the game carries on with what it was doing before the link trade was initiated.\n\nThe code from my example scene, and specifically these three distinct loops, would be best used as Scripts.\n\nNote about the packet size:\nI'm not 100% sure yet what size this expects/outputs, but I assume 1 packet = 1 byte. GBStudio stores variables as 16-bit (aka 2 byte) values, so I recommend using a packet size of 2 unless you're dealing with flags and true/false values where you can guarantee the second byte doesn't matter.",
-        "__collapse": true,
-        "__comment": true
-      },
-      "id": "3c7c9c97-ec7b-4fc7-bf59-560efc0beb73"
-    },
-    {
-      "command": "EVENT_COMMENT",
-      "args": {
         "text": "- NOTES -\nThis is an extremely sloppy and quickly thrown-together demo of how to establish a \"mutual\" link cable connection and send over one variable's value to the \"Receiver\" ROM.\n\nIt relies mostly on very aggressively keeping the scene stuck in a loop while it tries to brute-force sending and receiving a singular byte of data.\n\nRemember we are dealing with dial-up speeds, so plenty of delays allow the data transfers to finish before they overwrite their own buffers.\n\nThe basic idea is two stages of looping, and they are essentially mirrored between Sender and Receiver with the main difference being that there are two sets of variables exchanged between the devices.\n\nSo, each ROM goes through these stages:\n1: Loop until the other ROM sent you a TRUE value, this is now the local Connection variable that confirms the other ROM is attempting to talk to us. We are sending our own TRUE value to the other ROM at the same time.\n2: Move to the next loop where the data variable is sent over. This loop keeps going until both ROMs have confirmed that the value they are transferring/receiving has changed.\n3: The connection is then closed and the scene is changed back to the initial screen.\n\nThe code from my example scene, and specifically these loops, would be best used as Scripts.\n\nUpdated note about the packet size:\nThe GBStudio documentation has been updated and now clears up the confusion about the packet size.\nEach variable equals 1 packet, so if you want to send over multiple variables at once, you can increase the packet size. A packet size of 3 would mean that the variable you specified in the event and the 2 variables after it are sent/received.",
         "__collapse": true
       },
@@ -56,7 +47,7 @@
           }
         },
         "__collapseElse": false,
-        "__collapse": true
+        "__collapse": false
       },
       "children": {
         "true": [
@@ -720,7 +711,7 @@
                   "type": "false"
                 }
               },
-              "__collapse": true
+              "__collapse": false
             },
             "children": {
               "true": [
