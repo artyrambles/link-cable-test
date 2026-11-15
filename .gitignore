@@ -1,4 +1,3 @@
-build/
 cache/
 
 *.bak
@@ -6,3 +5,10 @@ cache/
 *.icloud
 
 user_settings.gbsres
+build/rom/globals.i
+build/rom/linkcabletest.ihx
+build/rom/linkcabletest.map
+build/rom/linkcabletest.noi
+build/rom/linkcabletest.rtc
+build/rom/linkcabletest.sa2
+build/rom/linkcabletest.sym
