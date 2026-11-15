@@ -1,0 +1,36 @@
+{
+  "_resourceType": "variables",
+  "variables": [
+    {
+      "id": "0",
+      "name": "SenderCart",
+      "symbol": "var_sendercart"
+    },
+    {
+      "id": "1",
+      "name": "SentValue",
+      "symbol": "var_sentvalue"
+    },
+    {
+      "id": "2",
+      "name": "Connected",
+      "symbol": "var_connected"
+    },
+    {
+      "id": "d4c393b9-b715-46aa-ba8b-dff11fb5531b__L0",
+      "name": "Local 0",
+      "symbol": "var_local_0"
+    },
+    {
+      "id": "ed325cd4-c259-4105-a27d-0de758091d8c__L1",
+      "name": "DataSent",
+      "symbol": "var_datasent"
+    },
+    {
+      "id": "ed325cd4-c259-4105-a27d-0de758091d8c__L0",
+      "name": "GreetingForReceiver",
+      "symbol": "var_greetingforreceiver"
+    }
+  ],
+  "constants": []
+}
