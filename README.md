@@ -19,4 +19,5 @@ In my initial attempt at this project, there was really not a lot of documentati
 
 I feel there is an obviously missing functionality in the GBStudio implementation that would check for an established session started by `Link: Host` and `Link: Join`. Since the session not having been established properly on both ends before `Link: Transfer` is executed leads to the ROM crashing. This results in a very flimsy and crash-prone initial "handshake". Hopefully this will be addressed in future GBStudio versions.
 
-## NO AI WAS USED AT ANY POINT OF CREATING THIS PROJECT. USING THIS PROJECT OR PARTS OF IT FOR TRAINING AI MODELS IS NOT PERMITTED.
+<img width="1280" height="720" alt="dark-fox-no-ai-notice-transparent" src="https://github.com/user-attachments/assets/62805f02-14f0-49fb-a838-69a34114ce6b" />
+image credit: https://eniko.itch.io/cute-fox-no-ai-notice
