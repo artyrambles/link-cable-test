@@ -172,7 +172,7 @@
               "text": [
                 "Cart will send the\ndata."
               ],
-              "__section": "text",
+              "__section": "behavior",
               "avatarId": "",
               "minHeight": 4,
               "maxHeight": 7,
@@ -184,10 +184,11 @@
               "showFrame": "true",
               "speedIn": -1,
               "speedOut": -1,
-              "closeWhen": "key",
+              "closeWhen": "text",
               "closeButton": "a",
               "closeDelayTime": 0.5,
-              "closeDelayFrames": 30
+              "closeDelayFrames": 30,
+              "__collapse": true
             },
             "id": "4524774d-2c21-4a0c-b2ef-86e243e909c8"
           },
@@ -210,7 +211,7 @@
               "text": [
                 "Cart will receive\nthe data."
               ],
-              "__section": "text",
+              "__section": "behavior",
               "avatarId": "",
               "minHeight": 4,
               "maxHeight": 7,
@@ -222,7 +223,7 @@
               "showFrame": "true",
               "speedIn": -1,
               "speedOut": -1,
-              "closeWhen": "key",
+              "closeWhen": "text",
               "closeButton": "a",
               "closeDelayTime": 0.5,
               "closeDelayFrames": 30
@@ -299,7 +300,8 @@
           "value": 0
         },
         "direction": "",
-        "fadeSpeed": "2"
+        "fadeSpeed": "2",
+        "__collapse": true
       },
       "id": "8086f068-9e73-428f-a363-aacc1d4b7156"
     }

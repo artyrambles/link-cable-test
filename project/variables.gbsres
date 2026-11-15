@@ -27,9 +27,29 @@
       "symbol": "var_datasent"
     },
     {
-      "id": "ed325cd4-c259-4105-a27d-0de758091d8c__L0",
+      "id": "60b96101-d9d1-4aed-a31f-3da9ffd150b4__L1",
+      "name": "DataSent",
+      "symbol": "var_datasent_0"
+    },
+    {
+      "id": "60b96101-d9d1-4aed-a31f-3da9ffd150b4__L0",
       "name": "GreetingForReceiver",
-      "symbol": "var_greetingforreceiver"
+      "symbol": "var_greetingforreceiver_0"
+    },
+    {
+      "id": "ed325cd4-c259-4105-a27d-0de758091d8c__L2",
+      "name": "ConnAttempts",
+      "symbol": "var_connattempts"
+    },
+    {
+      "id": "3",
+      "name": "ConnFromSender",
+      "symbol": "var_connfromsender"
+    },
+    {
+      "id": "4",
+      "name": "ConnFromReceiver",
+      "symbol": "var_connfromreceiver"
     }
   ],
   "constants": []

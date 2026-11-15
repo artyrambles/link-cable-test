@@ -1,0 +1,1148 @@
+{
+  "_resourceType": "scene",
+  "id": "ed325cd4-c259-4105-a27d-0de758091d8c",
+  "_index": 1,
+  "type": "TOPDOWN",
+  "name": "Transfer w Timeout",
+  "symbol": "scene_2",
+  "x": 608,
+  "y": 160,
+  "width": 20,
+  "height": 18,
+  "backgroundId": "1e5f9d6a-bdbc-43e6-8c34-22f5bb5dea05",
+  "tilesetId": "",
+  "colorModeOverride": "none",
+  "paletteIds": [],
+  "spritePaletteIds": [],
+  "autoFadeSpeed": 1,
+  "autoFadeEventCollapse": true,
+  "script": [
+    {
+      "command": "EVENT_COMMENT",
+      "args": {
+        "text": "- NOTES -\nThis is an extremely sloppy and quickly thrown-together demo of how to establish a \"mutual\" link cable connection and send over one variable's value to the \"Receiver\" ROM.\n\nIt relies mostly on very aggressively keeping the scene stuck in a loop while it tries to brute-force sending and receiving a singular byte of data.\n\nRemember we are dealing with dial-up speeds, so plenty of delays allow the data transfers to finish before they overwrite their own buffers.\n\nThe basic idea is three stages of looping, and they are essentially mirrored between Sender and Receiver with the main difference being that the Sender has the role of transmitting data to the Receiver\n\nSo, each ROM goes through these stages:\n1: Loop until the other ROM sent you a TRUE value, this is now the local Connection variable that confirms the other ROM is attempting to talk to us. We are sending our own TRUE value to the other ROM at the same time.\n2: Move to the next loop where the data variable is sent over. This loop keeps going until both ROMs have confirmed that the value they are transferring/receiving has changed.\n3: The last loop mutually closes the connection by sending FALSE and setting the local Connection variable to this received FALSE value. Only once this value has been confirmed, the final loop quits and the game carries on with what it was doing before the link trade was initiated.\n\nThe code from my example scene, and specifically these three distinct loops, would be best used as Scripts.\n\nNote about the packet size:\nI'm not 100% sure yet what size this expects/outputs, but I assume 1 packet = 1 byte. GBStudio stores variables as 16-bit (aka 2 byte) values, so I recommend using a packet size of 2 unless you're dealing with flags and true/false values where you can guarantee the second byte doesn't matter.",
+        "__collapse": true,
+        "__comment": true
+      },
+      "id": "3c7c9c97-ec7b-4fc7-bf59-560efc0beb73"
+    },
+    {
+      "command": "EVENT_COMMENT",
+      "args": {
+        "text": "- NOTES -\nThis is an extremely sloppy and quickly thrown-together demo of how to establish a \"mutual\" link cable connection and send over one variable's value to the \"Receiver\" ROM.\n\nIt relies mostly on very aggressively keeping the scene stuck in a loop while it tries to brute-force sending and receiving a singular byte of data.\n\nRemember we are dealing with dial-up speeds, so plenty of delays allow the data transfers to finish before they overwrite their own buffers.\n\nThe basic idea is two stages of looping, and they are essentially mirrored between Sender and Receiver with the main difference being that there are two sets of variables exchanged between the devices.\n\nSo, each ROM goes through these stages:\n1: Loop until the other ROM sent you a TRUE value, this is now the local Connection variable that confirms the other ROM is attempting to talk to us. We are sending our own TRUE value to the other ROM at the same time.\n2: Move to the next loop where the data variable is sent over. This loop keeps going until both ROMs have confirmed that the value they are transferring/receiving has changed.\n3: The connection is then closed and the scene is changed back to the initial screen.\n\nThe code from my example scene, and specifically these loops, would be best used as Scripts.\n\nUpdated note about the packet size:\nThe GBStudio documentation has been updated and now clears up the confusion about the packet size.\nEach variable equals 1 packet, so if you want to send over multiple variables at once, you can increase the packet size. A packet size of 3 would mean that the variable you specified in the event and the 2 variables after it are sent/received.",
+        "__collapse": true
+      },
+      "id": "5dd1fcf6-f7fa-461a-a33c-55e4e42b97ef"
+    },
+    {
+      "command": "EVENT_ACTOR_HIDE",
+      "args": {
+        "actorId": "$self$",
+        "__collapse": true
+      },
+      "id": "d28caddd-5674-4df0-9de9-144e62fb08a4"
+    },
+    {
+      "command": "EVENT_IF",
+      "args": {
+        "condition": {
+          "type": "eq",
+          "valueA": {
+            "type": "variable",
+            "value": "0"
+          },
+          "valueB": {
+            "type": "true"
+          }
+        },
+        "__collapseElse": false,
+        "__collapse": true
+      },
+      "children": {
+        "true": [
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "L2",
+              "value": {
+                "type": "number",
+                "value": 0
+              },
+              "__collapse": true
+            },
+            "id": "12ad2db3-a1ee-482c-8e03-2353ff07f688"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": "    = SENDER =",
+              "x": 1,
+              "y": 1,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "137a37f6-899f-4310-9dae-2a0d55d3447d"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "1",
+              "value": {
+                "type": "number",
+                "value": 1
+              },
+              "__collapse": true
+            },
+            "id": "93407c91-aec3-47ef-85f6-744b2a33ec5d"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Press A when you\nare ready to host."
+              ],
+              "__section": "text",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "key",
+              "closeButton": "a",
+              "closeDelayTime": 1,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "7bb8750b-e2cf-4a3f-8415-a55ae919988a"
+          },
+          {
+            "command": "EVENT_LINK_HOST",
+            "args": {
+              "__collapse": true
+            },
+            "id": "6b9d3b17-6720-402d-95e3-acad9bb6f53b"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "2",
+              "value": {
+                "type": "false"
+              },
+              "__collapse": true
+            },
+            "id": "c02108dc-e8ed-4721-ae0d-4ca00071c4ab"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "3",
+              "value": {
+                "type": "true"
+              },
+              "__collapse": true
+            },
+            "id": "7c9e90e8-7e6f-4b6e-b7f5-b733009f2f16"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "4",
+              "value": {
+                "type": "false"
+              },
+              "__collapse": true
+            },
+            "id": "75ee1341-ea39-422b-a985-6cdd141689f2"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Host ready!"
+              ],
+              "__section": "text",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "text",
+              "closeButton": "a",
+              "closeDelayTime": 0.5,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "e2e9d312-6213-4415-b13d-e4eb2cd5005e"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Press A when the\nreceiver is ready."
+              ],
+              "__section": "text",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "key",
+              "closeButton": "a",
+              "closeDelayTime": 1,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "5c39148e-c5f1-4867-8893-574e7d60a4cb"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": " Trying to connect\n        ...",
+              "x": 1,
+              "y": 15,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "48124fd1-d102-4196-a4f3-5f01e0d09fba"
+          },
+          {
+            "command": "EVENT_LOOP_WHILE",
+            "args": {
+              "condition": {
+                "type": "eq",
+                "valueA": {
+                  "type": "variable",
+                  "value": "2"
+                },
+                "valueB": {
+                  "type": "false"
+                }
+              },
+              "__collapse": true,
+              "__comment": false
+            },
+            "children": {
+              "true": [
+                {
+                  "command": "EVENT_LINK_TRANSFER",
+                  "args": {
+                    "sendVariable": "3",
+                    "receiveVariable": "4",
+                    "size": 1,
+                    "__collapse": true
+                  },
+                  "id": "e2758c3d-3ba2-4b1b-98df-8b373eaccd4f"
+                },
+                {
+                  "command": "EVENT_WAIT",
+                  "args": {
+                    "time": {
+                      "type": "number",
+                      "value": 2
+                    },
+                    "frames": {
+                      "type": "number",
+                      "value": 30
+                    },
+                    "__collapse": true
+                  },
+                  "id": "499b068e-061a-4faf-944d-6cd0b0e703e0"
+                },
+                {
+                  "command": "EVENT_INC_VALUE",
+                  "args": {
+                    "variable": "L2",
+                    "__collapse": true
+                  },
+                  "id": "015ef3d4-dc33-46d3-b989-8036adcf839e"
+                },
+                {
+                  "command": "EVENT_SET_VALUE",
+                  "args": {
+                    "variable": "2",
+                    "value": {
+                      "type": "variable",
+                      "value": "4"
+                    },
+                    "__collapse": true
+                  },
+                  "id": "a405b2c3-18b4-4e04-9ff8-7b67c5b681ef"
+                },
+                {
+                  "command": "EVENT_COMMENT",
+                  "args": {
+                    "text": "We abort the attempt after 10 seconds.",
+                    "__collapse": true
+                  },
+                  "id": "bc04e05b-0617-4a30-9709-1e985fa7b1e4"
+                },
+                {
+                  "command": "EVENT_IF",
+                  "args": {
+                    "condition": {
+                      "type": "gte",
+                      "valueA": {
+                        "type": "variable",
+                        "value": "L2"
+                      },
+                      "valueB": {
+                        "type": "number",
+                        "value": 10
+                      }
+                    },
+                    "__collapseElse": true,
+                    "__collapse": true,
+                    "__disableElse": true
+                  },
+                  "children": {
+                    "true": [
+                      {
+                        "command": "EVENT_TEXT",
+                        "args": {
+                          "text": [
+                            "Connection timed\nout!Resetting..."
+                          ],
+                          "__section": "behavior",
+                          "avatarId": "",
+                          "minHeight": 4,
+                          "maxHeight": 7,
+                          "textX": 1,
+                          "textY": 1,
+                          "textHeight": 5,
+                          "position": "bottom",
+                          "clearPrevious": true,
+                          "showFrame": "true",
+                          "speedIn": -1,
+                          "speedOut": -1,
+                          "closeWhen": "text",
+                          "closeButton": "a",
+                          "closeDelayTime": 1,
+                          "closeDelayFrames": 30,
+                          "__collapse": true
+                        },
+                        "id": "600614c1-bdbc-4921-be7d-35e2fb8b393a"
+                      },
+                      {
+                        "command": "EVENT_SWITCH_SCENE",
+                        "args": {
+                          "sceneId": "d4c393b9-b715-46aa-ba8b-dff11fb5531b",
+                          "x": {
+                            "type": "number",
+                            "value": 0
+                          },
+                          "y": {
+                            "type": "number",
+                            "value": 0
+                          },
+                          "direction": "",
+                          "fadeSpeed": "2",
+                          "__collapse": true
+                        },
+                        "id": "517e46fd-4be5-478b-9452-79d9284f0546"
+                      }
+                    ],
+                    "false": []
+                  },
+                  "id": "b66aae8f-22af-4fce-8f53-a63c3063ab8c"
+                }
+              ]
+            },
+            "id": "8ee6c51e-86c9-4a2d-927b-03faefe26dc1"
+          },
+          {
+            "command": "EVENT_OVERLAY_SET_SCANLINE_CUTOFF",
+            "args": {
+              "y": {
+                "type": "number",
+                "value": 0
+              },
+              "__collapse": true,
+              "__comment": false
+            },
+            "id": "5ef68edf-c31c-48d0-a71c-6226447c14f4"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": "    = SENDER =",
+              "x": 1,
+              "y": 1,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "862a48c1-f523-4ed1-9bed-36b8f144f785"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": "     Connected        \n        ...         ",
+              "x": 0,
+              "y": 15,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "816c00c5-2d21-49f9-8fb0-f12a52951a56"
+          },
+          {
+            "command": "EVENT_OVERLAY_SET_SCANLINE_CUTOFF",
+            "args": {
+              "y": {
+                "type": "number",
+                "value": 150
+              },
+              "__collapse": true,
+              "__comment": false
+            },
+            "id": "430d966b-bce3-4b90-9825-66031728f0a8"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "L1",
+              "value": {
+                "type": "false"
+              },
+              "__collapse": true
+            },
+            "id": "772e04d6-93d0-43ba-8007-22eded449a1b"
+          },
+          {
+            "command": "EVENT_LOOP_WHILE",
+            "args": {
+              "condition": {
+                "type": "eq",
+                "valueA": {
+                  "type": "variable",
+                  "value": "L1"
+                },
+                "valueB": {
+                  "type": "false"
+                }
+              },
+              "__collapse": true
+            },
+            "children": {
+              "true": [
+                {
+                  "command": "EVENT_LINK_TRANSFER",
+                  "args": {
+                    "sendVariable": "1",
+                    "receiveVariable": "L1",
+                    "size": 1,
+                    "__collapse": true
+                  },
+                  "id": "9bcfbae1-2279-4931-924e-68fb6e925e48"
+                },
+                {
+                  "command": "EVENT_WAIT",
+                  "args": {
+                    "time": {
+                      "type": "number",
+                      "value": 1
+                    },
+                    "frames": {
+                      "type": "number",
+                      "value": 30
+                    },
+                    "__collapse": true
+                  },
+                  "id": "e086130c-83c5-4a02-b595-fdcb4a381368"
+                }
+              ]
+            },
+            "id": "e9da1cc1-e7b0-485f-bd45-5df55f7ae573"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": "    = SENDER =",
+              "x": 1,
+              "y": 1,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "4b1907e7-99bb-4ef8-ae01-6d7241d28632"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Data was transfe-\n-rred! Closing\nconnection now."
+              ],
+              "__section": "behavior",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "text",
+              "closeButton": "a",
+              "closeDelayTime": 0.5,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "bd7dc461-33b4-4884-97ff-219d58061ed3"
+          },
+          {
+            "command": "EVENT_LINK_CLOSE",
+            "args": {
+              "__collapse": true
+            },
+            "id": "d680e80a-a732-42eb-9ef4-2cd5fd2c031a"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Connection closed!\nYou can remove the\nlink cables now."
+              ],
+              "__section": "text",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "key",
+              "closeButton": "a",
+              "closeDelayTime": 0.5,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "f52ccf38-6e92-4f82-afcb-10935732902c"
+          },
+          {
+            "command": "EVENT_SWITCH_SCENE",
+            "args": {
+              "sceneId": "d4c393b9-b715-46aa-ba8b-dff11fb5531b",
+              "x": {
+                "type": "number",
+                "value": 0
+              },
+              "y": {
+                "type": "number",
+                "value": 0
+              },
+              "direction": "",
+              "fadeSpeed": "2",
+              "__collapse": true
+            },
+            "id": "5c0b2234-2f5c-4559-be17-86a55e3da019"
+          }
+        ],
+        "false": [
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "L2",
+              "value": {
+                "type": "number",
+                "value": 0
+              },
+              "__collapse": true
+            },
+            "id": "6b681478-1396-4283-b2dc-d8bd4264b223"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": "   = RECEIVER =",
+              "x": 1,
+              "y": 1,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "83ce8ccc-dbec-4298-b165-eed1806ebcf3"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "1",
+              "value": {
+                "type": "number",
+                "value": 0
+              },
+              "__collapse": true
+            },
+            "id": "c58822f4-fbe5-42df-97f1-64f7cd85d5c9"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Press A when the \nhost is ready."
+              ],
+              "__section": "text",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "key",
+              "closeButton": "a",
+              "closeDelayTime": 1,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "33676b96-91ac-41e8-b343-d6b599dff7c7"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "2",
+              "value": {
+                "type": "false"
+              },
+              "__collapse": true
+            },
+            "id": "1e40c461-669d-4fb0-ba48-4b2969df0548"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "4",
+              "value": {
+                "type": "true"
+              },
+              "__collapse": true
+            },
+            "id": "a004a192-6620-4f21-b88b-0b256baf9190"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "3",
+              "value": {
+                "type": "false"
+              },
+              "__collapse": true
+            },
+            "id": "90cf17fe-60c4-476e-b2c8-a5043b3bb6ab"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Receiver ready!"
+              ],
+              "__section": "text",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "text",
+              "closeButton": "a",
+              "closeDelayTime": 0.5,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "15fbf32f-45ed-49a1-84c8-9a7bc6ba8798"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": " Trying to connect\n        ...",
+              "x": 1,
+              "y": 15,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "53dcafc9-88fb-4f13-99b4-d6d93f62f054"
+          },
+          {
+            "command": "EVENT_WAIT",
+            "args": {
+              "time": {
+                "type": "number",
+                "value": 1
+              },
+              "frames": {
+                "type": "number",
+                "value": 30
+              },
+              "__collapse": true
+            },
+            "id": "f1f9d244-d202-43cb-9521-2123cb03b8ac"
+          },
+          {
+            "command": "EVENT_LOOP_WHILE",
+            "args": {
+              "condition": {
+                "type": "eq",
+                "valueA": {
+                  "type": "variable",
+                  "value": "2"
+                },
+                "valueB": {
+                  "type": "false"
+                }
+              },
+              "__collapse": true
+            },
+            "children": {
+              "true": [
+                {
+                  "command": "EVENT_LINK_JOIN",
+                  "args": {
+                    "__collapse": true
+                  },
+                  "id": "2c3881ca-f641-4093-9dd1-372032d98d6b"
+                },
+                {
+                  "command": "EVENT_LINK_TRANSFER",
+                  "args": {
+                    "sendVariable": "4",
+                    "receiveVariable": "3",
+                    "size": 1,
+                    "__collapse": true
+                  },
+                  "id": "19ddac16-9031-4b46-9697-2f9ea627dc13"
+                },
+                {
+                  "command": "EVENT_INC_VALUE",
+                  "args": {
+                    "variable": "L2",
+                    "__collapse": true
+                  },
+                  "id": "5fa54e00-35a8-451a-80a2-15b2d3dafe3c"
+                },
+                {
+                  "command": "EVENT_WAIT",
+                  "args": {
+                    "time": {
+                      "type": "number",
+                      "value": 1
+                    },
+                    "frames": {
+                      "type": "number",
+                      "value": 30
+                    },
+                    "__collapse": true
+                  },
+                  "id": "3cbad54e-a162-4ae2-9ed0-579fe41d5a71"
+                },
+                {
+                  "command": "EVENT_SET_VALUE",
+                  "args": {
+                    "variable": "2",
+                    "value": {
+                      "type": "variable",
+                      "value": "3"
+                    },
+                    "__collapse": true
+                  },
+                  "id": "caf30c1c-09c7-45da-9453-bf7115ae5779"
+                },
+                {
+                  "command": "EVENT_COMMENT",
+                  "args": {
+                    "text": "We abort the attempt after 10 seconds.",
+                    "__collapse": true
+                  },
+                  "id": "8564ebd7-ec40-4414-8f3b-839008b3a0cd"
+                },
+                {
+                  "command": "EVENT_IF",
+                  "args": {
+                    "condition": {
+                      "type": "gte",
+                      "valueA": {
+                        "type": "variable",
+                        "value": "L2"
+                      },
+                      "valueB": {
+                        "type": "number",
+                        "value": 10
+                      }
+                    },
+                    "__collapseElse": true,
+                    "__collapse": true
+                  },
+                  "children": {
+                    "true": [
+                      {
+                        "command": "EVENT_TEXT",
+                        "args": {
+                          "text": [
+                            "Connection timed\nout!Resetting..."
+                          ],
+                          "__section": "behavior",
+                          "avatarId": "",
+                          "minHeight": 4,
+                          "maxHeight": 7,
+                          "textX": 1,
+                          "textY": 1,
+                          "textHeight": 5,
+                          "position": "bottom",
+                          "clearPrevious": true,
+                          "showFrame": "true",
+                          "speedIn": -1,
+                          "speedOut": -1,
+                          "closeWhen": "text",
+                          "closeButton": "a",
+                          "closeDelayTime": 1,
+                          "closeDelayFrames": 30,
+                          "__collapse": true
+                        },
+                        "id": "76fb6cfb-95f6-4676-99d8-fcd73d68cfe9"
+                      },
+                      {
+                        "command": "EVENT_SWITCH_SCENE",
+                        "args": {
+                          "sceneId": "d4c393b9-b715-46aa-ba8b-dff11fb5531b",
+                          "x": {
+                            "type": "number",
+                            "value": 0
+                          },
+                          "y": {
+                            "type": "number",
+                            "value": 0
+                          },
+                          "direction": "",
+                          "fadeSpeed": "2",
+                          "__collapse": true
+                        },
+                        "id": "b78df2f7-98f5-4ea9-be75-11d295cb20ff"
+                      }
+                    ],
+                    "false": []
+                  },
+                  "id": "e4a0fe56-1813-4bdd-8b4a-65bf23af6dce"
+                }
+              ]
+            },
+            "id": "5ab94239-fc44-4a32-bebe-6dbf4d6204c7"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": "   = RECEIVER =",
+              "x": 1,
+              "y": 1,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "710629fc-ae23-45ef-98e6-223d95569529"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": "     Connected        \n        ...         ",
+              "x": 0,
+              "y": 15,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "067ffe05-fbff-43d4-8bd1-d49be530ff5e"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Incoming connect-\n-ion accepted!"
+              ],
+              "__section": "behavior",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "text",
+              "closeButton": "a",
+              "closeDelayTime": 0.5,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "77bb784c-37a5-4e93-b33f-8975c7f2f0b4"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Sending status..."
+              ],
+              "__section": "text",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "text",
+              "closeButton": "a",
+              "closeDelayTime": 0.5,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "f5a2949a-b089-4879-b36d-4f16dbb1af5c"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "1",
+              "value": {
+                "type": "false"
+              },
+              "__collapse": true
+            },
+            "id": "6b463fa6-2c90-4ad8-b959-bad000247471"
+          },
+          {
+            "command": "EVENT_SET_VALUE",
+            "args": {
+              "variable": "L1",
+              "value": {
+                "type": "true"
+              },
+              "__collapse": true
+            },
+            "id": "6c51b68a-4659-4ada-b33c-c73a65634228"
+          },
+          {
+            "command": "EVENT_LOOP_WHILE",
+            "args": {
+              "condition": {
+                "type": "eq",
+                "valueA": {
+                  "type": "variable",
+                  "value": "1"
+                },
+                "valueB": {
+                  "type": "number",
+                  "value": 0
+                }
+              },
+              "__collapse": true
+            },
+            "children": {
+              "true": [
+                {
+                  "command": "EVENT_LINK_TRANSFER",
+                  "args": {
+                    "sendVariable": "L1",
+                    "receiveVariable": "1",
+                    "size": 1,
+                    "__collapse": true
+                  },
+                  "id": "8dc99d17-6d85-4427-896c-9212e6059a1e"
+                },
+                {
+                  "command": "EVENT_WAIT",
+                  "args": {
+                    "time": {
+                      "type": "number",
+                      "value": 1
+                    },
+                    "frames": {
+                      "type": "number",
+                      "value": 30
+                    },
+                    "__collapse": true
+                  },
+                  "id": "15726bf8-5dfa-41b3-9c94-258c97c37370"
+                },
+                {
+                  "command": "EVENT_SET_VALUE",
+                  "args": {
+                    "variable": "1",
+                    "value": {
+                      "type": "variable",
+                      "value": "T1"
+                    },
+                    "__collapse": false,
+                    "__comment": true
+                  },
+                  "id": "fe168d53-9e8e-4fff-b18c-4838a5b09ede"
+                }
+              ]
+            },
+            "id": "c9e990bf-6517-445a-a6ee-658a7c239763"
+          },
+          {
+            "command": "EVENT_TEXT_DRAW",
+            "args": {
+              "text": "   = RECEIVER =",
+              "x": 1,
+              "y": 1,
+              "location": "background",
+              "__collapse": true
+            },
+            "id": "47c6665b-74bb-4e0c-bb06-c994faa9fbba"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Received data!\nNew value: $01$"
+              ],
+              "__section": "text",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "key",
+              "closeButton": "a",
+              "closeDelayTime": 0.5,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "834e5cef-0b42-44a9-955d-6641eab0222d"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Closing connection\nnow."
+              ],
+              "__section": "behavior",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "text",
+              "closeButton": "a",
+              "closeDelayTime": 0.5,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "d305dd6b-f846-404d-bd07-418357baca4f"
+          },
+          {
+            "command": "EVENT_TEXT",
+            "args": {
+              "text": [
+                "Connection closed!\nYou can remove the\nlink cables now."
+              ],
+              "__section": "text",
+              "avatarId": "",
+              "minHeight": 4,
+              "maxHeight": 7,
+              "textX": 1,
+              "textY": 1,
+              "textHeight": 5,
+              "position": "bottom",
+              "clearPrevious": true,
+              "showFrame": "true",
+              "speedIn": -1,
+              "speedOut": -1,
+              "closeWhen": "key",
+              "closeButton": "a",
+              "closeDelayTime": 0.5,
+              "closeDelayFrames": 30,
+              "__collapse": true
+            },
+            "id": "64244033-10db-48c4-9144-05079ef88a05"
+          },
+          {
+            "command": "EVENT_LINK_CLOSE",
+            "args": {
+              "__collapse": true,
+              "condition": {
+                "type": "eq",
+                "valueA": {
+                  "type": "variable",
+                  "value": "2"
+                },
+                "valueB": {
+                  "type": "false"
+                }
+              }
+            },
+            "id": "b99b220d-9aaf-4159-81f0-b99376f4385b"
+          },
+          {
+            "command": "EVENT_SWITCH_SCENE",
+            "args": {
+              "sceneId": "d4c393b9-b715-46aa-ba8b-dff11fb5531b",
+              "x": {
+                "type": "number",
+                "value": 0
+              },
+              "y": {
+                "type": "number",
+                "value": 0
+              },
+              "direction": "",
+              "fadeSpeed": "2",
+              "__collapse": true
+            },
+            "id": "60557a3f-4484-42a7-9a32-1906d56c70f4"
+          }
+        ]
+      },
+      "id": "e58f5577-32c5-4457-a983-a6cf5d7d5335"
+    }
+  ],
+  "playerHit1Script": [],
+  "playerHit2Script": [],
+  "playerHit3Script": [],
+  "collisions": ""
+}
